@@ -5,7 +5,7 @@ import subjects from "./subjects.json" assert { type: "json" };
 serve(async (req) => {
   const pathname = req.url.split('/')[req.url.split('/').length-1];
 
-  if (pathname != "/favicon.ico") {
+  if (pathname != "favicon.ico") {
     var option = pathname.split('&');
     var year = option[0].split('=')[1];
     var month = option[1].split('=')[1];
