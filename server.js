@@ -3,8 +3,8 @@ import { serve } from "https://deno.land/std@0.151.0/http/server.ts";
 import subjects from "./subjects.json" assert { type: "json" };
 
 serve(async (req) => {
-  const pathname = new URL(req.url).pathname;
-  console.log(pathname);
+  const pathname = req.url.split('/')[req.url.split('/').length-1];
+
   if (pathname != "/favicon.ico") {
     var option = pathname.split('&');
     var year = option[0].split('=')[1];
