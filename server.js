@@ -28,20 +28,19 @@ serve(async (req) => {
 
     var semester;
     var event_name = "school day";
-    if (early_start <= date && date <= early_end) {
-      // 前期
+    if (dow == "sun" || dow == "sat") { // 休日
+      event_name = "holiday"
+    } else if (early_start <= date && date <= early_end) { // 前期
       semester = "early";
-    } else if (early_end < date && date < late_start1) {
-      // 夏休み
+    } else if (early_end < date && date < late_start1) { // 夏休み
       event_name = "summer vacation";
-    } else if ((late_start1 <= date && date <= late_end1) || (late_start2 <= date && date <= late_end2)) {
-      // 後期
+    } else if ((late_start1 <= date && date <= late_end1) || (late_start2 <= date && date <= late_end2)) { // 後期
       semester = "late";
-    } else if (late_end1 < date && date < late_start2) {
-      // 冬休み
+    } else if (late_end1 < date && date < late_start2) { // 冬休み
       event_name = "winter vacation";
-    } else {
-      // その他
+    } else if (date < early_start || late_start2 < date){ // 春休み
+      event_name = "spring vacation";
+    } else { // その他
       event_name = "other";
     }
 
