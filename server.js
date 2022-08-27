@@ -106,7 +106,7 @@ serve(async (req) => {
       }
     }
 
-    var json = `{"result": ${result}, "break_time": ${break_time}, "event":"${event_name}", "dow":"${dow}"}`;
+    var json = `{"result": ${result}, "break_time": ${break_time}, "event":"${event_name}", "dow":"${dow}", "hour":"${time}"}`;
     console.log(json);
     return new Response(json, {
       headers: {
