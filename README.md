@@ -1,7 +1,6 @@
 # subjects_api
 
-main ブランチに PUSH されたら自動で Deno Deploy にデプロイされます。
-
+main ブランチに PUSH されたら自動で Deno Deploy にデプロイされます。  
 https://fukuchiyama-subjects-api.deno.dev/
 
 
