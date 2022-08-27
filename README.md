@@ -10,8 +10,10 @@ https://fukuchiyama-subjects-api.deno.dev/
 https://fukuchiyama-subjects-api.deno.dev/?year=2022&month=10&day=5&hour=13&min=55  
 レスポンスはJSON．  
 "result"：講義の名前，学年，担当教員，教室，単位数，学部，必修有無を格納した辞書の配列  
-"break_time"：休み時間か否かをbool値で．resultは直近もしくは最中の講義情報を返す．始業前はtrue，放課後はfalse  
-"event"：長期休暇などのイベント情報．平常時はschool day．休暇中などはresultは空．  
+"break_time"：休み時間か否かをbool値で．resultは直近/最中の講義情報を返す．始業前はtrue，放課後はfalse  
+"event"：土日，長期休暇などのイベント情報．平常時はschool day．休暇中などのresultは空．  
+"dow"：曜日情報  
+"hour"：n時限目
 
 - memo  
 「今の時間帯の次の講義情報」オプションとかは簡単に実装できるから要望があれば  
