@@ -1,6 +1,7 @@
 // deno run --allow-net --watch --allow-read server.js
 import { serve } from "https://deno.land/std@0.151.0/http/server.ts";
-import subjects from "./subjects.json" assert { type: "json" };
+import subjects from "./data/subjects.json" assert { type: "json" };
+import config from "./data/config.json" assert { type: "json" };
 
 serve(async (req) => {
   const pathname = req.url.split('/')[req.url.split('/').length-1];
@@ -19,15 +20,17 @@ serve(async (req) => {
     var dayOfWeekStr = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
     var dow = dayOfWeekStr[date.getDay()];
 
-    var early_start = new Date('2022-04-08');
-    var early_end = new Date('2022-07-28');
-    var late_start1 = new Date('2022-09-28');
-    var late_end1 = new Date('2022-12-23');
-    var late_start2 = new Date('2023-01-11');
-    var late_end2 = new Date('2023-02-02');
+    var early_start = new Date(config.early_start);
+    var early_end = new Date(config.early_end);
+    var late_start1 = new Date(config.late_start1);
+    var late_end1 = new Date(config.late_end1);
+    var late_start2 = new Date(config.late_start2);
+    var late_end2 = new Date(config.late_end2);
 
+    // 日付検証
     var semester;
     var event_name = "school day";
+
     if (dow == "sun" || dow == "sat") { // 休日
       event_name = "holiday"
     } else if (early_start <= date && date <= early_end) { // 前期
@@ -40,10 +43,17 @@ serve(async (req) => {
       event_name = "winter vacation";
     } else if (date < early_start || late_start2 < date){ // 春休み
       event_name = "spring vacation";
-    } else { // その他
-      event_name = "other";
+    };
+
+    var holidays = config.holidays;
+    for (var i in holidays) { // 祝日
+      if (holidays[i][0] == Number(month) && holidays[i][1] == Number(day)) {
+        event_name = holidays[i][2];
+        semester = "";
+      }
     }
 
+    // 時間帯検証
     var c1_start = new Date(0, 0, 0, 8, 50);
     var c1_end = new Date(0, 0, 0, 10, 20);
     var c2_start = new Date(0, 0, 0, 10, 30);
@@ -99,6 +109,7 @@ serve(async (req) => {
       event_name = "after school";
     }
 
+
     var result = JSON.stringify([]);
     if (semester) { // 前期・後期
       if (time) { // 放課でない
@@ -108,10 +119,6 @@ serve(async (req) => {
 
     var json = `{"result": ${result}, "break_time": ${break_time}, "event":"${event_name}", "dow":"${dow}", "hour":"${time}"}`;
     console.log(json);
-    return new Response(json, {
-      headers: {
-        'content-type': 'application/json'
-      }
-    });
+    return new Response(json, { headers: { 'content-type': 'application/json' } });
   }
 });
