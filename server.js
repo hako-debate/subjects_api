@@ -2,9 +2,12 @@
 import { serve } from "https://deno.land/std@0.151.0/http/server.ts";
 import subjects from "./data/subjects.json" assert { type: "json" };
 import config from "./data/config.json" assert { type: "json" };
+import { CSV } from "https://js.sabae.cc/CSV.js";
+const holidays = CSV.toJSON(await CSV.fetch("https://www8.cao.go.jp/chosei/shukujitsu/syukujitsu.csv"));
+
 
 serve(async (req) => {
-  const pathname = req.url.split('/')[req.url.split('/').length-1];
+  const pathname = req.url.split('/')[req.url.split('/').length - 1];
 
   if (pathname != "favicon.ico") {
     var option = pathname.split('&');
@@ -45,13 +48,13 @@ serve(async (req) => {
       event_name = "spring vacation";
     };
 
-    var holidays = config.holidays;
     for (var i in holidays) { // 祝日
-      if (holidays[i][0] == Number(month) && holidays[i][1] == Number(day)) {
-        event_name = holidays[i][2];
+      if (holidays[i]["国民の祝日・休日月日"] == year+ '/' + Number(month) + '/' + Number(day)) {
+        event_name = holidays[i]["国民の祝日・休日名称"];
         semester = "";
       }
     }
+
 
     // 時間帯検証
     var c1_start = new Date(0, 0, 0, 8, 50);
