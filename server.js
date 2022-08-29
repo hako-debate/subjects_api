@@ -109,7 +109,9 @@ serve(async (req) => {
     } else if (c5_end < time_date) {
       // 放課
       break_time = true;
-      event_name = "after school";
+      if (event_name == "school day") {
+        event_name = "after school";
+      }
     }
 
 
